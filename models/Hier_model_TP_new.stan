@@ -31,12 +31,11 @@ f = betak[1] * x[,1] + betak[2] * x[,2] + betak[3] * x[,3] + beta0;
 }
 model {
 // priors
-mu_beta0 ~ normal(0, 1);
-sigma_beta0 ~ gamma(2, 2);
-beta0 ~ normal(mu_beta0, sigma_beta0);
-mu_betak ~ normal(0, 3);
-
-sigma_betak ~ gamma(3, 3);
+mu_beta0 ~ normal(0, 1);               // mu_beta0 ~ normal(0, 10); //in Section 10
+sigma_beta0 ~ gamma(2, 2);             // sigma_beta0 ~ gamma(2, 2); //in Section 10
+beta0 ~ normal(mu_beta0, sigma_beta0); // beta0 ~ normal(mu_beta0, sigma_beta0); //in Section 10
+mu_betak ~ normal(0, 3);               // mu_betak ~ normal(0, 3); //in Section 10
+sigma_betak ~ gamma(3, 3);             // sigma_betak ~ gamma(3, 3); //in Section 10
 
 for (i in 1:K)
 betak[i] ~ normal(mu_betak, sigma_betak);
