@@ -276,6 +276,7 @@ Hierfit <- sampling(object=HierfitDSO,
                     cores=4,
                     thin=1,
                     init=0,
+                    seed=0,
                     control = list( #add options to improve sampling (divergent transitions)
                       adapt_delta=0.98, #default=0.8
                       max_treedepth =15 #default= 10
@@ -352,6 +353,7 @@ GPfit <- sampling(object=GPfitDSO,
                    cores=4,
                    thin=1,
                    init=0,
+                   seed=0,
                    control = list( #add options to improve sampling (divergent transitions)
                      adapt_delta=0.98, #default=0.8
                      max_treedepth =15 #default= 10
@@ -389,7 +391,12 @@ table(as.factor(as.numeric(GP_y[idx2,1]>0.5)), Y[idx2])
 
 loo2 <- loo(GPfit, save_psis = TRUE)
 
+# compare
+plot(loo1,diagnostic = c("k", "n_eff"),main = "Hierarchical model")
+plot(loo2,diagnostic = c("k", "n_eff"),main = "GP model")
 
+comp = loo_compare(list("Hier_model" = loo1, "GP_model" = loo2))
+comp
 
 ######################################
 #####STAN MV probit model fitting#####
