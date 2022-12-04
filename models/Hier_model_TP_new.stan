@@ -43,12 +43,12 @@ betak[i] ~ normal(mu_betak, sigma_betak);
 Y[idx1] ~ binomial_logit(trials[idx1], f[idx1]);
 }    
 generated quantities{
-vector[N1] y_predict;
-vector[N1] f_invlogit;
-vector[N1] log_lik;
-vector[N2] log_y_new;
+	vector[N1+N2] y_predict;
+	vector[N1+N2] f_invlogit;
+	vector[N1+N2] log_lik;
+	vector[N2] log_y_new;
 
-for(i in 1:(N1)){
+for(i in 1:(N1+N2)){
 y_predict[i] = binomial_rng(1, inv_logit(f[i]));
 f_invlogit[i] = inv_logit(f[i]);
 log_lik[i] = bernoulli_logit_lpmf(Y[i] | inv_logit(f[i]));
