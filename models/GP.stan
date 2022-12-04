@@ -31,7 +31,6 @@ data {
 parameters {
  real<lower=0> alpha[K]; // lengthscale of f
  real<lower=0> rho[K];       // scale of f
- real<lower=0> sigma;         // noise sigma
  matrix[N1+N2,K] eta;
  }
 transformed parameters{
@@ -44,19 +43,18 @@ model {
   // priors
  alpha ~ normal(0, 1);
  rho ~ normal(0, 1);
- sigma ~ normal(0,5);
  to_vector(eta) ~ normal(0,1);
  Y[idx1] ~ binomial_logit(trials[idx1], f[idx1]);
  }    
 generated quantities{
-	vector[N1] y_predict;
-	vector[N1] f_invlogit;
-	vector[N1] log_lik;
+	vector[N1+N2] y_predict;
+	vector[N1+N2] f_invlogit;
+	vector[N1+N2] log_lik;
 	// vector[NN] log_y_predict;
 	// vector[N] y_new;
 	vector[N2] log_y_new;
 	
-	for(i in 1:(N1)){
+	for(i in 1:(N1+N2)){
 		y_predict[i] = binomial_rng(1, inv_logit(f[i]));
 		f_invlogit[i] = inv_logit(f[i]);  //bernoulli_logit_rng(f[i])
 		log_lik[i] = bernoulli_logit_lpmf(Y[i] | inv_logit(f[i]));
